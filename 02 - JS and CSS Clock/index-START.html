@@ -18,8 +18,7 @@
 
   <style>
     html {
-      background: #018DED url(https://unsplash.it/1500/1000?image=881&blur=5);
-      background-size: cover;
+      background: rgb(154, 85, 225);
       font-family: 'helvetica neue';
       text-align: center;
       font-size: 10px;
@@ -56,19 +55,58 @@
       transform: translateY(-3px); /* account for the height of the clock hands */
     }
 
+    .second-hand{
+    height: 4px !important;
+    }
+
+    .min-hand{
+      background: #532c79 !important;
+    }
+
     .hand {
       width: 50%;
       height: 6px;
       background: black;
       position: absolute;
       top: 50%;
+      transform-origin: 100%; /* changes rotating point to the right side, so it's in the center of the clock */
+      /* (Removed because added into js below) transform: rotate(90deg); changes starting postition from left (9) to straight up (12) and makes it more intuitive to see how much rotation to give the hands to depict the correct hours */
+      transition: all 0.05s; /* gives a short delay to the movement of the hands to make them appear more natural */
+      transition-timing-function: cubic-bezier(.1,2.7,.87,.33); /* slightly overshoots the position before returning to mimic a regular clock*/ 
     }
 
   </style>
 
   <script>
+const secondHand = document.querySelector('.second-hand'); /*Finds the second hand that is defined earlier in the html, and gives me something in javascript to manipulate*/
+const minHand = document.querySelector('.min-hand'); /* Same thing as above but for minutes */
+const hourHand = document.querySelector('.hour-hand'); /* Same thing as above but for hours */
 
 
+function setDate() {
+  const now = new Date();
+
+  const seconds = now.getSeconds();
+  const secondsDegrees = ((seconds * 6) + 90); /* base 90 starts the hand vertically at 12, instead of horizontally at 9. Multiplying by 6 gives the degrees that we'll need the second hand to be at (30*6 = 180) */
+  secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+  if (secondsDegrees > 443 || secondsDegrees <= 90){
+    secondsHand.style.transition = `none`;
+  };
+
+
+  const mins = now.getMinutes();
+  const minsDegrees = ((mins * 6) + 90); /* base 90 starts the hand vertically at 12 or 0, instead of horizontally at 9. Multiplying by 6 gives the degrees that we'll need the second hand to be at (30*6 = 180) */
+  minHand.style.transform = `rotate(${minsDegrees}deg)`;
+  
+  
+  const hours = now.getHours();
+  const hoursDegrees = ((hours * 30) + 90); /* base 90 starts the hand vertically at 12 or 0, because there's only 12 numbers instead of 60, 360/12 = 30, which means that every hour is 30 degrees apart. This also includes anything past 12 hours, as it just loops once (12*30=360) + the current hour * 30 */
+  hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
+
+  
+  }
+
+setInterval(setDate, 1000);
   </script>
 </body>
 </html>
