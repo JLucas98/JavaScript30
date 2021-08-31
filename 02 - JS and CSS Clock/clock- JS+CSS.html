@@ -89,24 +89,17 @@ function setDate() {
   const seconds = now.getSeconds();
   const secondsDegrees = ((seconds * 6) + 90); /* base 90 starts the hand vertically at 12, instead of horizontally at 9. Multiplying by 6 gives the degrees that we'll need the second hand to be at (30*6 = 180) */
   secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
-  if (secondsDegrees > 443 || secondsDegrees <= 90){
-    secondsHand.style.transition = `none`;
-  };
-
-
+  
   const mins = now.getMinutes();
   const minsDegrees = ((mins * 6) + 90); /* base 90 starts the hand vertically at 12 or 0, instead of horizontally at 9. Multiplying by 6 gives the degrees that we'll need the second hand to be at (30*6 = 180) */
   minHand.style.transform = `rotate(${minsDegrees}deg)`;
   
-  
   const hours = now.getHours();
   const hoursDegrees = ((hours * 30) + 90); /* base 90 starts the hand vertically at 12 or 0, because there's only 12 numbers instead of 60, 360/12 = 30, which means that every hour is 30 degrees apart. This also includes anything past 12 hours, as it just loops once (12*30=360) + the current hour * 30 */
   hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
-
-  
   }
 
-setInterval(setDate, 1000);
+setInterval(setDate, 1000); /*Calling setdate per second, cause that's the fastest change we have in our clock*/
   </script>
 </body>
 </html>
